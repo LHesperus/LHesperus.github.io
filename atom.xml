@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-11-14T11:52:23.132Z</updated>
+  <updated>2020-11-15T05:57:02.129Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://example.com/2020/11/14/my-first-hexo-blog/"/>
     <id>http://example.com/2020/11/14/my-first-hexo-blog/</id>
     <published>2020-11-14T07:50:34.000Z</published>
-    <updated>2020-11-14T11:52:23.132Z</updated>
+    <updated>2020-11-15T05:57:02.129Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><ul><li><a href="https://www.cnblogs.com/huanhao/p/hexobase.html">https://www.cnblogs.com/huanhao/p/hexobase.html</a></li><li><a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a></li></ul><h4 id="更新博客"><a href="#更新博客" class="headerlink" title="更新博客"></a>更新博客</h4><ul><li>新建博客：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;新博客标题&quot;</span><br></pre></td></tr></table></figure>或直接新建一个markdown文件。</li><li>本地预览：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li><li>上传<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure></li></ul><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p> 可能博客上传后出现404<br>在repo的setting中重新save个人域名</p><h4 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h4><p>相关参考：</p><ul><li><a href="https://blog.csdn.net/zgd826237710/article/details/99671027">Hexo 好看的主题推荐</a></li><li><a href="https://blog.cofess.com/2017/11/01/hexo-blog-theme-pure-usage-description.html">pure主题</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><ul><li><a href="https://www.cnblogs.com/huanhao/p/hexobase.html">https://www.cnblogs.com/huanhao/p/hexobase.html</a></li><li><a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a></li></ul><h4 id="更新博客"><a href="#更新博客" class="headerlink" title="更新博客"></a>更新博客</h4><ul><li>新建博客：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;新博客标题&quot;</span><br></pre></td></tr></table></figure>或直接新建一个markdown文件。</li><li>本地预览：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li><li>上传<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure></li></ul><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p> 可能博客上传后出现404<br>在repo的setting中重新save个人域名</p><h4 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h4><p>相关参考：</p><ul><li><a href="https://blog.csdn.net/zgd826237710/article/details/99671027">Hexo 好看的主题推荐</a></li><li><a href="https://blog.cofess.com/2017/11/01/hexo-blog-theme-pure-usage-description.html">pure主题</a></li></ul><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>@import “<a href="https://github.com/LHesperus/Cpp-Notes/blob/master/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90.md&quot;">https://github.com/LHesperus/Cpp-Notes/blob/master/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90.md&quot;</a></p>]]></content>
     
     
       
@@ -34,6 +34,10 @@
     
     
     
+    <category term="Hexo" scheme="http://example.com/categories/Hexo/"/>
+    
+    
+    <category term="Hexo" scheme="http://example.com/tags/Hexo/"/>
     
   </entry>
   
