@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>static关键字 | Hexo</title>
+  <meta name="description" content="static关键字  参考  C&#x2F;C++ 中 static 的用法全局变量与局部变量   static 的引入 在函数内部定义的变量，当程序执行到它的定义处时，编译器为它在栈上分配空间，函数在栈上分配的空间在此函数执行结束时会释放掉，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？ 最容易想到的方法是定义为全局的变量，但定义一个全局变量有许多缺点，最明显的缺点是破坏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="static关键字">
+<meta property="og:url" content="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="static关键字  参考  C&#x2F;C++ 中 static 的用法全局变量与局部变量   static 的引入 在函数内部定义的变量，当程序执行到它的定义处时，编译器为它在栈上分配空间，函数在栈上分配的空间在此函数执行结束时会释放掉，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？ 最容易想到的方法是定义为全局的变量，但定义一个全局变量有许多缺点，最明显的缺点是破坏">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-24T07:57:00.000Z">
+<meta property="article:modified_time" content="2020-11-16T09:18:03.747Z">
+<meta property="article:author" content="LCG">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/LHesperus" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">LHesperus</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Software Development Engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Sichuan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>暂无公告!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/Matlab/">Matlab</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" rel="tag">奇技淫巧</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BB%BA%E7%AB%99/" rel="tag">建站</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" style="font-size: 13px;">奇技淫巧</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">学习笔记</a> <a href="/tags/%E5%BB%BA%E7%AB%99/" style="font-size: 13px;">建站</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Hexo/Matlab/">Matlab</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/16/hexo/hexo-batch-process-file/" class="title">Hexo批处理文件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-16T07:43:55.000Z" itemprop="datePublished">2020-11-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/14/hexo/my-first-hexo-blog/" class="title">第一个Hexo博客</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-14T07:50:34.000Z" itemprop="datePublished">2020-11-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/13/hexo/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-13T13:31:20.028Z" itemprop="datePublished">2020-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" class="title">内存对齐</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-12T02:41:00.000Z" itemprop="datePublished">2020-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/09/CPP-Notes/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="title">深浅拷贝</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-09T03:43:00.000Z" itemprop="datePublished">2020-09-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-CPP-Notes/static关键字" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      static关键字
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/" class="article-date">
+	  <time datetime="2020-07-24T07:57:00.000Z" itemprop="datePublished">2020-07-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+	
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="static关键字"><a class="markdownIt-Anchor" href="#static关键字"></a> static关键字</h3>
+<h4 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h4>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/cpp-static-usage.html">C/C++ 中 static 的用法全局变量与局部变量</a></li>
+</ul>
+<h4 id="static-的引入"><a class="markdownIt-Anchor" href="#static-的引入"></a> static 的引入</h4>
+<p>在函数内部定义的变量，当程序执行到它的定义处时，编译器为它在栈上分配空间，函数在栈上分配的空间在此函数执行结束时会释放掉，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？ 最容易想到的方法是定义为全局的变量，但定义一个<strong>全局变量有许多缺点</strong>，最明显的缺点是<strong>破坏了此变量的访问范围</strong>（使得在此函数中定义的变量，不仅仅只受此函数控制）。static 关键字则可以很好的解决这个问题。</p>
+<p>另外，在 C++ 中，需要一个数据对象为整个类而非某个对象服务,同时又力求不破坏类的封装性,即要求此成员隐藏在类的内部，对外不可见时，可将其定义为静态数据。</p>
+<p><strong>C++中作用</strong><br />
+（1）在修饰变量的时候，static 修饰的静态局部变量只执行初始化一次，而且延长了局部变量的生命周期，直到程序运行结束以后才释放。<br />
+（2）static 修饰全局变量的时候，这个全局变量只能在本文件中访问，<strong>不能在其它文件中访问</strong>，<strong>即便是 extern 外部声明也不可以</strong>。<br />
+（3）static 修饰一个函数，则这个函数的只能在本文件中调用，不能被其他文件调用。static 修饰的变量存放在全局数据区的静态变量区，包括全局静态变量和局部静态变量，都在全局数据区分配内存。初始化的时候自动初始化为 0。<br />
+（4）不想被释放的时候，可以使用static修饰。比如修饰函数中存放在栈空间的数组。如果不想让这个数组在函数调用结束释放可以使用 static 修饰。<br />
+（5）考虑到数据安全性（当程序想要使用全局变量的时候应该先考虑使用 static）。</p>
+<p><strong>全局变量和全局静态变量的区别</strong></p>
+<p>1）<strong>全局变量是不显式用 static 修饰的全局变量</strong>，全局变量默认是有外部链接性的，作用域是整个工程，在一个文件内定义的全局变量，在另一个文件中，通过 extern 全局变量名的声明，就可以使用全局变量。<br />
+2）全局静态变量是显式用 static 修饰的全局变量，作用域是声明此变量所在的文件，其他的文件即使用 extern 声明也不能使用。</p>
+<p><strong>静态局部变量有以下特点：</strong><br />
+（1）该变量在全局数据区分配内存；<br />
+（2）静态局部变量在程序执行到该对象的声明处时被首次初始化，即以后的函数调用不再进行初始化；<br />
+（3）静态局部变量一般在声明处初始化，如果没有显式初始化，会被程序自动初始化为 0；<br />
+（4）它<strong>始终驻留在全局数据区</strong>，直到程序运行结束。但其作用域为<strong>局部作用域</strong>，当定义它的函数或语句块结束时，其作用域随之结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;static_test.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> StaticTest::a = <span class="number">0</span>;<span class="comment">//必须初始化</span></span><br><span class="line"><span class="keyword">int</span> StaticTest::c = <span class="number">0</span>;<span class="comment">//必须初始化</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StaticTest::func1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;func1 a: &quot;</span> &lt;&lt; a++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;func1 b: &quot;</span> &lt;&lt; b++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;func1 c: &quot;</span> &lt;&lt; c++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;func1-&gt;&quot;</span>;</span><br><span class="line">	func2();<span class="comment">//类的非静态成员函数可以调用用静态成员函数，但反之不能。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StaticTest::func2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;func2 a: &quot;</span> &lt;&lt; a++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="comment">//cout &lt;&lt; &quot;func2 b: &quot; &lt;&lt; b++ &lt;&lt; endl;//static修饰的函数不能访问非static变量</span></span><br><span class="line">	<span class="comment">//cout &lt;&lt; &quot;func2 c: &quot; &lt;&lt; c++ &lt;&lt; endl;//static修饰的函数不能访问非static变量</span></span><br><span class="line">	<span class="comment">//fun1();///类的非静态成员函数可以调用用静态成员函数，但反之不能。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StaticTest::func3</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> aa = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> bb = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;func3 aa : &quot;</span> &lt;&lt; aa++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;func3 bb : &quot;</span> &lt;&lt; bb++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> STATIC_TEST_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STATIC_TEST_H</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticTest</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	StaticTest() :<span class="comment">/*a(0),//错误*/</span>b(<span class="number">0</span>) &#123; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> c;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> a;</span><br><span class="line">	<span class="keyword">int</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !STATIC_TEST_H</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;static_test.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StaticTest ST;</span><br><span class="line">    ST.func1();</span><br><span class="line">    ST.func1();</span><br><span class="line">    ST.func1();</span><br><span class="line">    <span class="comment">//ST.c = 1;//错误，文件外不能访问</span></span><br><span class="line">    <span class="comment">//StaticTest::c = 1;//错误，文件外不能访问</span></span><br><span class="line">    ST.func2();</span><br><span class="line">    ST.func2();</span><br><span class="line">    ST.func2();</span><br><span class="line">    ST.func3();</span><br><span class="line">    ST.func3();</span><br><span class="line">    ST.func3();</span><br><span class="line">   <span class="comment">// StaticTest::func1();//错误，不能通过类名来调用类的非静态成员函数。类的对象可以使用静态成员函数和非静态成员函数</span></span><br><span class="line">    StaticTest::func2();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>静态成员函数</strong></p>
+<p>（1）静态成员函数和静态数据成员一样，他们都属于类的静态成员，而不是对象成员。<br />
+（2）非静态成员函数有 this 指针，<strong>而静态成员函数没有 this 指针</strong>。<br />
+（3）静态成员函数主要用来方位静态数据成员而不能访问非静态成员。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/" title="static关键字" target="_blank" rel="external">https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/LHesperus" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/LHesperus" target="_blank"><span class="text-dark">LHesperus</span><small class="ml-1x">Software Development Engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/07/25/CPP-Notes/%E5%A4%A7%E5%B0%8F%E7%AB%AF/" title="大小端"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="C++ 内存模型"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

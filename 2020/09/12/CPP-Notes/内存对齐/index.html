@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>内存对齐 | Hexo</title>
+  <meta name="description" content="内存对齐 C&#x2F;C内存对齐详解 C&#x2F;C 结构体及其数组的内存对齐 现代计算机中内存空间都是按照 byte 划分的，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但是实际的计算机系统对基本类型数据在内存中存放的位置有限制，它们会要求这些数据的首地址的值是某个数k（通常它为4或8）的倍数，这就是所谓的内存对齐。 内存对齐规则 每个特定平台上的编译器都有自己的默认“对齐系数”（也叫对齐模数）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存对齐">
+<meta property="og:url" content="https://www.liuchanggeng.xyz/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="内存对齐 C&#x2F;C内存对齐详解 C&#x2F;C 结构体及其数组的内存对齐 现代计算机中内存空间都是按照 byte 划分的，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但是实际的计算机系统对基本类型数据在内存中存放的位置有限制，它们会要求这些数据的首地址的值是某个数k（通常它为4或8）的倍数，这就是所谓的内存对齐。 内存对齐规则 每个特定平台上的编译器都有自己的默认“对齐系数”（也叫对齐模数）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826111859_b3dab8ab5d8dc96f4c8a7573093a1f67.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112057_2e9f9087d6b19c3407781d70b39cecb6.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112135_73e2f090768275127d4c0fa0e6894b7d.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112544_0ec9353c30e080b2b8df6876b1f29a61.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112556_8e1d9d1f6d348e3cde8f8bca15f0380e.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826143505_29a8e1da282b88bff0cb109165302824.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826144017_a3480f68f4749e0ba1da30c4c70861c3.png">
+<meta property="article:published_time" content="2020-09-12T02:41:00.000Z">
+<meta property="article:modified_time" content="2020-11-16T09:14:38.121Z">
+<meta property="article:author" content="LCG">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826111859_b3dab8ab5d8dc96f4c8a7573093a1f67.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.liuchanggeng.xyz/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/LHesperus" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">LHesperus</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Software Development Engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Sichuan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>暂无公告!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/Matlab/">Matlab</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" rel="tag">奇技淫巧</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BB%BA%E7%AB%99/" rel="tag">建站</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" style="font-size: 13px;">奇技淫巧</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">学习笔记</a> <a href="/tags/%E5%BB%BA%E7%AB%99/" style="font-size: 13px;">建站</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Hexo/Matlab/">Matlab</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/16/hexo/hexo-batch-process-file/" class="title">Hexo批处理文件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-16T07:43:55.000Z" itemprop="datePublished">2020-11-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/14/hexo/my-first-hexo-blog/" class="title">第一个Hexo博客</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-14T07:50:34.000Z" itemprop="datePublished">2020-11-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/13/hexo/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-13T13:31:20.028Z" itemprop="datePublished">2020-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" class="title">内存对齐</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-12T02:41:00.000Z" itemprop="datePublished">2020-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/09/CPP-Notes/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="title">深浅拷贝</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-09T03:43:00.000Z" itemprop="datePublished">2020-09-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-CPP-Notes/内存对齐" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      内存对齐
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" class="article-date">
+	  <time datetime="2020-09-12T02:41:00.000Z" itemprop="datePublished">2020-09-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.8k(字)</span>
+	
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="内存对齐"><a class="markdownIt-Anchor" href="#内存对齐"></a> 内存对齐</h3>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30007037">C/C<ins>内存对齐详解</a><br />
+<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/666852837034">C/C</ins> 结构体及其数组的内存对齐</a><br />
+现代计算机中内存空间都是按照 byte 划分的，从理论上讲似乎对任何类型的变量的访问可以从任何地址开始，但是实际的计算机系统对基本类型数据在内存中存放的位置有限制，它们会要求这些数据的首地址的值是某个数k（通常它为4或8）的倍数，这就是所谓的内存对齐。</p>
+<p><strong>内存对齐规则</strong><br />
+每个特定平台上的编译器都有自己的默认“对齐系数”（也叫对齐模数）。gcc中默认#pragma pack(4)，可以通过预编译命令#pragma pack(n)，n = <strong>1,2,4,8,16</strong>来改变这一系数。不能用一些奇怪的数，比如3，vscode报错了，但vstudio没报错，怀疑是强转了。</p>
+<p>有效对其值：是给定值#pragma pack(n)和结构体中最长数据类型长度中较小的那个。<strong>有效对齐值</strong>也叫对齐单位。</p>
+<p>了解了上面的概念后，我们现在可以来看看内存对齐需要遵循的规则：</p>
+<p>(1) 结构体第一个成员的偏移量（offset）为0，以后每个成员相对于结构体首地址的 offset 都是该成员大小与有效对齐值中较小那个的整数倍，如有需要编译器会在成员之间加上填充字节。</p>
+<p>(3) <strong>结构体的总大小为 有效对齐值 的整数倍</strong>，如有需要编译器会在最末一个成员之后加上填充字节。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(8)<span class="comment">//window默认8，linux默认4</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> a;<span class="comment">//起始偏移0-&gt;0</span></span><br><span class="line">    <span class="keyword">int</span> b;<span class="comment">//偏移min(8,4)=4-&gt;0XXX0000</span></span><br><span class="line">    <span class="keyword">short</span> c;<span class="comment">//偏移min(8,2)=2(8是2的倍数，不需要补齐)-&gt;0xxx|0000|00</span></span><br><span class="line">    <span class="keyword">double</span> d;<span class="comment">//min(8,8)=8(10不是8的倍数-&gt;16-&gt;补六位)-&gt;0xxx|0000|00xxxxxx|00000000//24</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">char</span> a;</span><br><span class="line">    <span class="keyword">int</span> b;</span><br><span class="line">    <span class="keyword">short</span> c;</span><br><span class="line">&#125;;<span class="comment">//同上，结构体对齐10-&gt;12(和长度最长成员的对齐)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    S s;</span><br><span class="line">    C c;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;s.a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;s.b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;s.c);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;s.d);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;c.a);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;c.b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>, &amp;c.c);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(s) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(c) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(s.a) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(s.b) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(s.c) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(s.d) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="keyword">sizeof</span>(<span class="keyword">double</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>windows debug 86</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">10ff7d8</span><br><span class="line">10ff7dc</span><br><span class="line">10ff7e0</span><br><span class="line">10ff7e8</span><br><span class="line">10ff7c4</span><br><span class="line">10ff7c8</span><br><span class="line">10ff7cc</span><br><span class="line">24</span><br><span class="line">12</span><br><span class="line">1</span><br><span class="line">4</span><br><span class="line">2</span><br><span class="line">8</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
+<p><strong>#pragma pack(4)</strong> ,<br />
+<strong>windows debug 86</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">f5fadc</span><br><span class="line">f5fae0</span><br><span class="line">f5fae4</span><br><span class="line">f5fae8</span><br><span class="line">f5fac8</span><br><span class="line">f5facc</span><br><span class="line">f5fad0</span><br><span class="line">20</span><br><span class="line">12</span><br><span class="line">1</span><br><span class="line">4</span><br><span class="line">2</span><br><span class="line">8</span><br><span class="line">8</span><br></pre></td></tr></table></figure>
+<p>#pragma pack(1)即各变量内存总和</p>
+<p>结构体内的数组(如int a[10])可以认为连续有10个int的变量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(8)</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> a;<span class="comment">//0-&gt;4</span></span><br><span class="line">	<span class="keyword">char</span> b;<span class="comment">//4-&gt;1</span></span><br><span class="line">	<span class="keyword">short</span> c;<span class="comment">//6-&gt;2</span></span><br><span class="line">	<span class="keyword">char</span> d[<span class="number">17</span>];<span class="comment">//8-&gt;16+1=25</span></span><br><span class="line">&#125;;<span class="comment">//25补上3个字节后是min(8,int)的倍数 28</span></span><br></pre></td></tr></table></figure>
+<p>C与指针：根据边界对齐要求<strong>降序排列</strong>结构体成员可以最大限度减少存储中浪费的内存空间。</p>
+<h4 id="union"><a class="markdownIt-Anchor" href="#union"></a> union</h4>
+<p>参考：C与指针211页<br />
+union，中文名“联合体、共用体”，在某种程度上类似结构体struct的一种数据结构，共用体(union)和结构体(struct)同样可以包含很多种数据类型和变量。<br />
+一个联合体的所有成员都<strong>存储在内部的同一位置</strong>，通过访问不同类型的联合成员，内存中相同的位组合可以被解释为不同的东西，联合在实现<strong>变体记录</strong>(内存中某个特定的区域将在不同的时刻存储不同类型的值)时很有用，但程序员必须负责确认实际存储的是那个变体并选择正确的联合成员以便访问数据。联合变量也可以进行初始化，但<strong>初始值必须为联合第一个成员的类型匹配</strong>（如果不匹配的话编译器会强转，可能的话，如double-&gt;int）。</p>
+<p>区别：<br />
+结构体(struct)中所有变量是“共存”的——优点是“有容乃大”，全面；缺点是struct内存空间的分配是粗放的，不管用不用，全分配。<br />
+而联合体(union)中是各变量是“互斥”的——缺点就是不够“包容”；但优点是内存使用更为精细灵活，也节省了内存空间(一般不用数组，用指针代替数组，这样就不会又太大的变量)。</p>
+<p>union联合体所有数据成员共享一段内存，<strong>后写入的成员数据将覆盖之前的成员数据</strong>，成员数据都有相同的首地址。</p>
+<ul>
+<li>内存对齐规则：没找到，自己猜的，以最大的变量(数组算总长度)为内部内存占的空间，然后按结构体的内存对齐思想，找内部最大的类型(数组算单个长度)和#pragma pack(n)中最小的，以此倍数补齐。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(8)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">char</span> a[<span class="number">2</span>];</span><br><span class="line">	<span class="keyword">char</span> b[<span class="number">999</span>];</span><br><span class="line">&#125;un;<span class="comment">//sizeof(un))=999;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(8)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">short</span> a[<span class="number">2</span>];</span><br><span class="line">	<span class="keyword">char</span> b[<span class="number">999</span>];</span><br><span class="line">&#125;un;<span class="comment">//sizeof(un))=1000;以short的倍数补齐</span></span><br></pre></td></tr></table></figure>
+<h4 id="位段位域bit-field"><a class="markdownIt-Anchor" href="#位段位域bit-field"></a> 位段/位域(bit field)</h4>
+<p>参考：C与指针<br />
+<a target="_blank" rel="noopener" href="http://c.biancheng.net/view/2037.html">http://c.biancheng.net/view/2037.html</a><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826111859_b3dab8ab5d8dc96f4c8a7573093a1f67.png" alt="a\b\20200826111859_b3dab8ab5d8dc96f4c8a7573093a1f67.png" /><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112057_2e9f9087d6b19c3407781d70b39cecb6.png" alt="a\b\20200826112057_2e9f9087d6b19c3407781d70b39cecb6.png" /><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112135_73e2f090768275127d4c0fa0e6894b7d.png" alt="a\b\20200826112135_73e2f090768275127d4c0fa0e6894b7d.png" /><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112544_0ec9353c30e080b2b8df6876b1f29a61.png" alt="a\b\20200826112544_0ec9353c30e080b2b8df6876b1f29a61.png" /><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826112556_8e1d9d1f6d348e3cde8f8bca15f0380e.png" alt="a\b\20200826112556_8e1d9d1f6d348e3cde8f8bca15f0380e.png" /><br />
+如果冒号后面不加位数，会自动按类型的原本长度如int，char等分配。<br />
+概要：</p>
+<ul>
+<li>移植性</li>
+<li>signed unsigned</li>
+<li>内存分配方向</li>
+<li>操作系统位数，位段最大长度(不能超过类型长度int，char等)</li>
+</ul>
+<p>总结：位段允许长度为奇数的一些值包装在一起以节省存储空间，源代码如果需要访问一个值内部的一些位，使用位段比较简单(也可以通过移位和屏蔽实现，目标代码中两种实现方式无区别)，位段是结构的一种，但它的长度以位为大卫指定，位段声明在本质上是不可移植的(也能移植，但需要考虑太多因素)</p>
+<p><strong>百度</strong><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826143505_29a8e1da282b88bff0cb109165302824.png" alt="a\b\20200826143505_29a8e1da282b88bff0cb109165302824.png" /><br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/a%5Cb%5C20200826144017_a3480f68f4749e0ba1da30c4c70861c3.png" alt="a\b\20200826144017_a3480f68f4749e0ba1da30c4c70861c3.png" /></p>
+<p><strong>例题</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(8)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">long</span> i;</span><br><span class="line">	<span class="keyword">char</span> j[<span class="number">10</span>];</span><br><span class="line">	<span class="keyword">int</span> k;</span><br><span class="line">&#125;Data;<span class="comment">//最长10，按最大类型long4字节倍数-&gt;10-&gt;12</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">data1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> m;<span class="comment">//4</span></span><br><span class="line">	Data n;<span class="comment">// min(12,8)=8,4-&gt;8,8+12=20</span></span><br><span class="line">	<span class="keyword">double</span> i;<span class="comment">//min(8,8)=8=&gt;20-&gt;24,24+8=32;</span></span><br><span class="line">&#125;test;<span class="comment">//最长12，32-&gt;12*3=36</span></span><br></pre></td></tr></table></figure>
+<p>C 库宏 offsetof(type, member-designator) 会生成一个类型为 size_t 的整型常量，它是一个结构成员相对于结构开头的字节偏移量。成员是由 member-designator 给定的，结构的名称是在 type 中给定的</p>
+<p>以下运行结果和我预想的不一致，没搞明白，有时间再看。就是结构体各首地址应该多少？为什么和分配内存对齐的结果不一致，难道是因为地址这样做方便程序员不考虑内存对齐就可以用指针指向具体成员？内部系统自己再转换成对齐后的地址？？？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; (<span class="keyword">int</span>)offsetof(struct data1, m) &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//0</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; (<span class="keyword">int</span>)offsetof(struct data1, n) &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//4</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; (<span class="keyword">int</span>)offsetof(struct data1, i) &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//16</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;data1::m);<span class="comment">//0</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;data1::n);<span class="comment">//4</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;data1::i);<span class="comment">//16</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;test);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;test.m);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;test.n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, &amp;test.i);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">6340928</span><br><span class="line">6340928</span><br><span class="line">6340932</span><br><span class="line">6340944</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.liuchanggeng.xyz/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" title="内存对齐" target="_blank" rel="external">https://www.liuchanggeng.xyz/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/LHesperus" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/LHesperus" target="_blank"><span class="text-dark">LHesperus</span><small class="ml-1x">Software Development Engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/11/13/hexo/hello-world/" title="Hello World"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/09/09/CPP-Notes/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/" title="深浅拷贝"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

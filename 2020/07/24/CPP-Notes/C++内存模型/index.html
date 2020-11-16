@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>C++ 内存模型 | Hexo</title>
+  <meta name="description" content="C++ 内存模型  参考资料  C&#x2F;C++程序内存的分配 深入理解计算机系统   一个C&#x2F;C++编译的程序占用内存分为以下几个部分：  栈区（stack）：由编译器自动分配与释放，存放为运行时函数分配的局部变量、函数参数、返回数据、返回地址等。其操作类似于数据结构中的栈。 堆区（heap）：一般由程序员自动分配，如果程序员没有释放，程序结束时可能有OS回收。其分配类似于链表。 全局区（静态区st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 内存模型">
+<meta property="og:url" content="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C++ 内存模型  参考资料  C&#x2F;C++程序内存的分配 深入理解计算机系统   一个C&#x2F;C++编译的程序占用内存分为以下几个部分：  栈区（stack）：由编译器自动分配与释放，存放为运行时函数分配的局部变量、函数参数、返回数据、返回地址等。其操作类似于数据结构中的栈。 堆区（heap）：一般由程序员自动分配，如果程序员没有释放，程序结束时可能有OS回收。其分配类似于链表。 全局区（静态区st">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/github/C%2B%2B%20Notes/C%2B%2B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png">
+<meta property="og:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/github/C%2B%2B%20Notes/C%2B%2B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/2.png">
+<meta property="article:published_time" content="2020-07-24T07:09:00.000Z">
+<meta property="article:modified_time" content="2020-11-16T09:04:59.272Z">
+<meta property="article:author" content="LCG">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/github/C%2B%2B%20Notes/C%2B%2B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/LHesperus" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">LHesperus</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Software Development Engineer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Sichuan, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>暂无公告!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/Matlab/">Matlab</a><span class="category-list-count">1</span></li></ul></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" rel="tag">奇技淫巧</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BB%BA%E7%AB%99/" rel="tag">建站</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" style="font-size: 13px;">奇技淫巧</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">学习笔记</a> <a href="/tags/%E5%BB%BA%E7%AB%99/" style="font-size: 13px;">建站</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Hexo/Matlab/">Matlab</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/16/hexo/hexo-batch-process-file/" class="title">Hexo批处理文件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-16T07:43:55.000Z" itemprop="datePublished">2020-11-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Hexo/">Hexo</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/14/hexo/my-first-hexo-blog/" class="title">第一个Hexo博客</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-14T07:50:34.000Z" itemprop="datePublished">2020-11-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/13/hexo/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-13T13:31:20.028Z" itemprop="datePublished">2020-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/12/CPP-Notes/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90/" class="title">内存对齐</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-12T02:41:00.000Z" itemprop="datePublished">2020-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C-C/">C/C++</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/09/CPP-Notes/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/" class="title">深浅拷贝</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-09T03:43:00.000Z" itemprop="datePublished">2020-09-09</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-CPP-Notes/C++内存模型" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      C++ 内存模型
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="article-date">
+	  <time datetime="2020-07-24T07:09:00.000Z" itemprop="datePublished">2020-07-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+	
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="c-内存模型"><a class="markdownIt-Anchor" href="#c-内存模型"></a> C++ 内存模型</h1>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cherrydreamsover/article/details/81627855">C/C++程序内存的分配</a></li>
+<li><a href="">深入理解计算机系统</a></li>
+</ul>
+<h4 id="一个cc编译的程序占用内存分为以下几个部分"><a class="markdownIt-Anchor" href="#一个cc编译的程序占用内存分为以下几个部分"></a> 一个C/C++编译的程序占用内存分为以下几个部分：</h4>
+<ul>
+<li>栈区（stack）：由编译器自动分配与释放，存放为运行时函数分配的局部变量、函数参数、返回数据、返回地址等。其操作类似于数据结构中的栈。</li>
+<li>堆区（heap）：一般由程序员自动分配，如果程序员没有释放，程序结束时可能有OS回收。其分配类似于链表。</li>
+<li>全局区（静态区static）：存放全局变量、静态数据、常量。程序结束后由系统释放。全局区分为已初始化全局区（data）和未初始化全局区（bss）。</li>
+<li>常量区（文字常量区）：存放常量字符串，程序结束后有系统释放。</li>
+<li>代码区：存放函数体（类成员函数和全局区）的二进制代码。</li>
+</ul>
+<h4 id="三种内存分配方式"><a class="markdownIt-Anchor" href="#三种内存分配方式"></a> 三种内存分配方式</h4>
+<ul>
+<li><strong>从静态存储区分配</strong> ：内存在程序编译的时候已经分配好，这块内存在程序的整个运行期间都存在。例如全局变量，static变量。</li>
+<li><strong>在栈上创建</strong>： 在执行函数时，函数内局部变量的存储单元可以在栈上创建，函数执行结束时，这些内存单元会自动被释放。栈内存分配运算内置于处理器的指令集，效率高，但是分配的内存容量有限。</li>
+<li><strong>从堆上分配</strong>：亦称为动态内存分配。程序在运行的时候使用malloc或者new申请任意多少的内存，程序员自己负责在何时用free或delete释放内存。<br />
+动态内存的生命周期有程序员决定，使用非常灵活，但如果在堆上分配了空间，既有责任回收它，否则运行的程序会出现内存泄漏，频繁的分配和释放不同大小的堆空间将会产生内存碎片。</li>
+</ul>
+<h4 id="简图"><a class="markdownIt-Anchor" href="#简图"></a> 简图</h4>
+<p><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/github/C%2B%2B%20Notes/C%2B%2B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png" alt="" /></p>
+<p>在 C 语言中，全局变量又分为初始化的和未初始化的（未被初始化的对象存储区可以通过 void* 来访问和操纵，程序结束后由系统自行释放），在 C++ 里面没有这个区分了，他们共同占用同一块内存区。<br />
+<img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/github/C%2B%2B%20Notes/C%2B%2B%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/2.png" alt="" /></p>
+<h4 id=""><a class="markdownIt-Anchor" href="#"></a> </h4>
+<ul>
+<li><strong>管理方式不同</strong>：栈是由编译器自动申请和释放空间，堆是需要程序员手动申请和释放；</li>
+<li><strong>空间大小不同</strong>：栈的空间是有限的，在32位平台下，VC6下默认为1M，堆最大可以到4G；</li>
+<li><strong>能否产生碎片</strong>：栈和数据结构中的栈原理相同，在弹出一个元素之前，上一个已经弹出了，不会产生碎片，如果不停地调用malloc、free对造成内存碎片很多；<br />
+生长方向不同：堆生长方向是向上的，也就是向着内存地址增加的方向，栈刚好相反，向着内存减小的方向生长。</li>
+<li><strong>分配方式不同</strong>：堆都是动态分配的，没有静态分配的堆。栈有静态分配和动态分配。静态分配是编译器完成的，比如局部变量的分配。动态分配由 malloc 函数进行分配，但是栈的动态分配和堆是不同的，它的动态分配是由编译器进行释放，无需我们手工实现。</li>
+<li><strong>分配效率不同</strong>：栈的效率比堆高很多。栈是机器系统提供的数据结构，计算机在底层提供栈的支持，分配专门的寄存器来存放栈的地址，压栈出栈都有相应的指令，因此比较快。堆是由库函数提供的，机制很复杂，库函数会按照一定的算法进行搜索内存，因此比较慢。</li>
+</ul>
+<p><strong>64位Ubnutu下测试</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">  <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;func() int:  &quot;</span>&lt;&lt;&amp;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> *j=<span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">  <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;func() new int:  &quot;</span>&lt;&lt;j&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">delete</span> j;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> global=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> *gp=<span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s=<span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">    <span class="keyword">int</span> s1=<span class="keyword">sizeof</span>(<span class="keyword">long</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,s);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,s1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello\n&quot;</span>);</span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> *j=<span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    <span class="keyword">int</span> *k=<span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    <span class="keyword">int</span> *ii=&amp;i;</span><br><span class="line">    <span class="keyword">int</span> *iii=<span class="keyword">new</span> <span class="keyword">int</span>;</span><br><span class="line">    iii=&amp;i;</span><br><span class="line">    <span class="keyword">int</span> *a=(<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">int</span> *p=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">static</span> <span class="keyword">int</span> x=<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;&amp; int: &quot;</span>&lt;&lt;&amp;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;new int:  &quot;</span>&lt;&lt;j&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;new int:   &quot;</span>&lt;&lt;k&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;malloc int:  &quot;</span>&lt;&lt;a&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;int*:   &quot;</span>&lt;&lt;p&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;int*=&amp;int:   &quot;</span>&lt;&lt;ii&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;new int*=&amp;int:   &quot;</span>&lt;&lt;iii&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;const static int :&quot;</span>&lt;&lt;&amp;x&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;global int&quot;</span>&lt;&lt;&amp;global&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">&quot;global new int*&quot;</span>&lt;&lt;gp&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    test();</span><br><span class="line">    <span class="keyword">delete</span> j;</span><br><span class="line">    <span class="keyword">delete</span> k;</span><br><span class="line">    <span class="built_in">free</span>(a);</span><br><span class="line">    <span class="keyword">delete</span> gp;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">8</span><br><span class="line">hello</span><br><span class="line">&amp; int: 0x7ffff146db8c</span><br><span class="line">new int:  0x1156050</span><br><span class="line">new int:   0x1156070</span><br><span class="line">malloc int:  0x11560b0</span><br><span class="line">int*:   0</span><br><span class="line">int*&#x3D;&amp;int:   0x7ffff146db8c</span><br><span class="line">new int*&#x3D;&amp;int:   0x7ffff146db8c</span><br><span class="line">const static int :0x400fd4</span><br><span class="line">global int0x6020a0</span><br><span class="line">global new int*0x1155c20</span><br><span class="line">func() int:  0x7ffff146db5c</span><br><span class="line">func() new int:  0x11560e0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>windows下测试结果不同</p>
+<p>参考<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/36103513/answer/66101372">堆、栈的地址高低？ 栈的增长方向？ - RednaxelaFX的回答 - 知乎<br />
+</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" title="C++ 内存模型" target="_blank" rel="external">https://www.liuchanggeng.xyz/2020/07/24/CPP-Notes/C++%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/LHesperus" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/LHesperus" target="_blank"><span class="text-dark">LHesperus</span><small class="ml-1x">Software Development Engineer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/07/24/CPP-Notes/static%E5%85%B3%E9%94%AE%E5%AD%97/" title="static关键字"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/07/04/CPP-Notes/35%E4%B8%AA%E6%94%B9%E5%96%84%E7%BC%96%E7%A8%8B%E4%B8%8E%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%9C%89%E6%95%88%E6%96%B9%E6%B3%95/" title="35个改善编程与设计的有效方法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/LHesperus" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '',
+    clientSecret: '',
+    repo: '',
+    owner: '',
+    admin: [''],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
