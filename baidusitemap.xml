@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com/2020/11/14/my-first-hexo-blog/</loc>
-    <lastmod>2020-11-15</lastmod>
+    <loc>https://www.liuchanggeng.xyz/2021/11/14/hexo/my-first-hexo-blog/</loc>
+    <lastmod>2020-11-16</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2020/11/13/hello-world/</loc>
-    <lastmod>2020-11-13</lastmod>
+    <loc>https://www.liuchanggeng.xyz/2020/11/16/hexo/hexo-batch-process-file/</loc>
+    <lastmod>2020-11-16</lastmod>
+  </url>
+  <url>
+    <loc>https://www.liuchanggeng.xyz/2020/11/13/hexo/hello-world/</loc>
+    <lastmod>2020-11-15</lastmod>
   </url>
 </urlset> 
