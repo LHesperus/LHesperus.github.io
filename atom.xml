@@ -6,7 +6,7 @@
   <link href="https://www.liuchanggeng.xyz/atom.xml" rel="self"/>
   
   <link href="https://www.liuchanggeng.xyz/"/>
-  <updated>2020-11-16T08:10:46.667Z</updated>
+  <updated>2021-05-10T11:03:34.432Z</updated>
   <id>https://www.liuchanggeng.xyz/</id>
   
   <author>
@@ -15,6 +15,85 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Matlab安装minGW</title>
+    <link href="https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/Matlab%E5%AE%89%E8%A3%85minGW/"/>
+    <id>https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/Matlab%E5%AE%89%E8%A3%85minGW/</id>
+    <published>2021-05-10T10:38:53.000Z</published>
+    <updated>2021-05-10T11:03:34.432Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="matlab安装mingw"><a class="markdownIt-Anchor" href="#matlab安装mingw"></a> Matlab安装minGW</h1><p>如果仅仅安装minGw而不需要Matlab使用<br />可参考<br /><a href="http://c.biancheng.net/view/8077.html#:~:text=MinGW%E7%9A%84%E5%AE%89%E8%A3%85.%20%E7%9B%B8%E6%AF%94%E5%9C%A8%20Linux%20%E5%B9%B3%E5%8F%B0%E4%B8%8A%E5%AE%89%E8%A3%85%20GCC%20%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%EF%BC%8C%E5%9C%A8%20Windows%20%E5%B9%B3%E5%8F%B0%E4%B8%8A%E5%AE%89%E8%A3%85,MinGW%20%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE.%204%29%20%E8%AF%BB%E8%80%85%E5%8F%AF%E6%A0%B9%E6%8D%AE%E8%87%AA%E5%B7%B1%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%EF%BC%8C%E8%87%AA%E5%AE%9A%E4%B9%89%20MinGW%20%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE%EF%BC%88%E4%BE%8B%E5%A6%82%E6%88%91%E9%80%89%E6%8B%A9%E5%B0%86%E5%85%B6%E5%AE%89%E8%A3%85%E5%88%B0%20E%20%E7%9B%98%EF%BC%89%EF%BC%8C%E7%84%B6%E5%90%8E%E7%82%B9%E5%87%BB%E2%80%9Ccontinue%E2%80%9D%EF%BC%8C%E8%BF%9B%E5%85%A5%E4%B8%8B%E9%9D%A2%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%A1%86%EF%BC%9A.">MinGW下载和安装教程</a></p><p>matlab使用minGW可能有版本限制</p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mex -setup</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误使用 mex</span><br><span class="line">未找到支持的编译器或 SDK。您可以安装免费提供的 MinGW-w64 C&#x2F;C++ 编译器；请参阅安装 MinGW-w64 编译器。有关更多选项，请访问</span><br><span class="line">http:&#x2F;&#x2F;www.mathworks.com&#x2F;support&#x2F;compilers&#x2F;R2016b&#x2F;win64.html。</span><br></pre></td></tr></table></figure><p>考虑在附加功能中安装，在附加功能中搜 <code>mingw</code><br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510184634.jpg" alt="" /></p><p>安装这个，下载得到 <code>mingw.mlpkginstall</code>文件，用matlab打开它，如果你有多个版本的matlab，可能用错版本，考虑直接将此文件拖到matlab窗口里，或者</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uiopen(&#39;C:\Users\LCG\Documents\mingw.mlpkginstall&#39;,1)</span><br></pre></td></tr></table></figure><p>在高版本Maltab中应该能安装成功。<br />如果低版本出现<br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510172334.jpg" alt="" /><br />可按照下面方法解决<br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510180101.jpg" alt="" /><br /><a href="https://freefr.dl.sourceforge.net/project/tdm-gcc/TDM-GCC%20Installer/Previous/1.1309.0/tdm64-gcc-4.9.2.exe">https://freefr.dl.sourceforge.net/project/tdm-gcc/TDM-GCC%20Installer/Previous/1.1309.0/tdm64-gcc-4.9.2.exe </a></p><p>设置环境变量</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenv(&#39;MW_MINGW64_LOC&#39;,&#39;C:\TDM-GCC-64&#39;) </span><br></pre></td></tr></table></figure><p>如果还出错，可以参考<a href="https://blog.csdn.net/alxe_made/article/details/103765503">matlab报错：尝试将 SCRIPT xxx 作为函数执行</a>中的解决办法，即<strong>每次</strong>在设置中<code>更新工具箱路径缓存</code><br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510174703.jpg" alt="" /></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;matlab安装mingw&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#matlab安装mingw&quot;&gt;&lt;/a&gt; Matlab安装minGW&lt;/h1&gt;
+&lt;p&gt;如果仅仅安装minGw而不需要Matlab使用&lt;br /&gt;
+可参考&lt;br /&gt;</summary>
+      
+    
+    
+    
+    <category term="Matlab" scheme="https://www.liuchanggeng.xyz/categories/Matlab/"/>
+    
+    
+    <category term="软件安装入门" scheme="https://www.liuchanggeng.xyz/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%85%A5%E9%97%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>同软件多个版本相互冲突</title>
+    <link href="https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/%E5%90%8C%E8%BD%AF%E4%BB%B6%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9B%B8%E4%BA%92%E5%86%B2%E7%AA%81/"/>
+    <id>https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/%E5%90%8C%E8%BD%AF%E4%BB%B6%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9B%B8%E4%BA%92%E5%86%B2%E7%AA%81/</id>
+    <published>2021-05-10T06:59:24.000Z</published>
+    <updated>2021-05-10T07:11:08.700Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="同软件多个版本相互冲突"><a class="markdownIt-Anchor" href="#同软件多个版本相互冲突"></a> 同软件多个版本相互冲突</h1><p>安装多个版本的Matlab后，在bin文件夹下双击matlab.exe即可打开Matlab，但不同版本的此文件名称相同，如果创建快捷方式后有可能冲突出错。<br />要保证快捷方式名称不同，并且在各文件夹中名称一致。</p><p><strong>下图是开始屏幕相关的文件夹</strong><br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510150357.jpg" alt="" /></p><p><strong>安装目录</strong><br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510150416.jpg" alt="" /></p><p><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510150837.jpg" alt="" /></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;同软件多个版本相互冲突&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#同软件多个版本相互冲突&quot;&gt;&lt;/a&gt; 同软件多个版本相互冲突&lt;/h1&gt;
+&lt;p&gt;安装多个版本的Matlab后，在bin文件夹下双击matlab.exe即可打开Matlab</summary>
+      
+    
+    
+    
+    <category term="Matlab" scheme="https://www.liuchanggeng.xyz/categories/Matlab/"/>
+    
+    
+    <category term="软件安装入门" scheme="https://www.liuchanggeng.xyz/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%85%A5%E9%97%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>stk_matlab_connect</title>
+    <link href="https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/stk-matlab-connect/"/>
+    <id>https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/stk-matlab-connect/</id>
+    <published>2021-05-10T03:45:32.000Z</published>
+    <updated>2021-05-10T10:36:00.819Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="stk-与matlab-的连接"><a class="markdownIt-Anchor" href="#stk-与matlab-的连接"></a> STK 与Matlab 的连接</h1><p>参考链接：<br /><a href="https://help.agi.com/stk/index.htm#install/MATLABsetup.htm">https://help.agi.com/stk/index.htm#install/MATLABsetup.htm</a></p><p>确保STK和Matlab版本兼容<br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510121624.jpg" alt="" /><br />兼容信息也可在连接器文件夹的<code>version.txt</code>中查看<br /><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510123317.jpg" alt="" /></p><ul><li>在STK安装文件目录下查找MATLAB_Connectors或MATLAB_Connectors_X64 文件夹</li><li>双击 setup.exe</li></ul><p><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510122541.jpg" alt="" /></p><p><img src="https://lcg-pic-tencent-1258286866.cos.ap-chengdu.myqcloud.com/blog/QQ%E6%88%AA%E5%9B%BE20210510160216.jpg" alt="" /></p><p>Matlab中使用stkInit初始化</p><p>添加路径</p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addpath(<span class="string">&#x27;D:\AGI\STK 11\bin\Matlab&#x27;</span>)</span><br></pre></td></tr></table></figure><p>但有可能出现以下错误</p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">尝试将 SCRIPT mexConnect 作为函数执行:</span><br><span class="line">D:\AGI\STK <span class="number">11</span>\bin\Matlab\mexConnect.m</span><br><span class="line"></span><br><span class="line">出错 stkValidScen (line <span class="number">20</span>)</span><br><span class="line">out = mexConnect(<span class="string">&#x27;stkValidScen&#x27;</span>);</span><br><span class="line"></span><br><span class="line">出错 stkInit (line <span class="number">15</span>)</span><br><span class="line"><span class="keyword">if</span> stkValidScen</span><br></pre></td></tr></table></figure><p>解决办法参考链接</p><p><a href="https://blog.csdn.net/weixin_43116425/article/details/104412291">STK 与 matlab 连接报错</a> ：<br />在运行stkInit前先运行C:\ProgramData\AGI\STK MATLAB文件夹下的<code>startup.m</code>文件</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;stk-与matlab-的连接&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#stk-与matlab-的连接&quot;&gt;&lt;/a&gt; STK 与Matlab 的连接&lt;/h1&gt;
+&lt;p&gt;参考链接：&lt;br /&gt;
+&lt;a href=&quot;https://help</summary>
+      
+    
+    
+    
+    <category term="Matlab" scheme="https://www.liuchanggeng.xyz/categories/Matlab/"/>
+    
+    <category term="STK" scheme="https://www.liuchanggeng.xyz/categories/Matlab/STK/"/>
+    
+    
+    <category term="软件安装入门" scheme="https://www.liuchanggeng.xyz/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%85%A5%E9%97%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>Hexo批处理文件</title>
@@ -49,7 +128,7 @@
     <link href="https://www.liuchanggeng.xyz/2020/11/14/hexo/my-first-hexo-blog/"/>
     <id>https://www.liuchanggeng.xyz/2020/11/14/hexo/my-first-hexo-blog/</id>
     <published>2020-11-14T07:50:34.000Z</published>
-    <updated>2020-11-16T08:20:52.714Z</updated>
+    <updated>2020-11-17T12:28:56.443Z</updated>
     
     <content type="html"><![CDATA[<h4 id="参考链接"><a class="markdownIt-Anchor" href="#参考链接"></a> 参考链接</h4><ul><li><a href="https://www.cnblogs.com/huanhao/p/hexobase.html">https://www.cnblogs.com/huanhao/p/hexobase.html</a></li><li><a href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a></li></ul><h4 id="更新博客"><a class="markdownIt-Anchor" href="#更新博客"></a> 更新博客</h4><ul><li>新建博客：</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;新博客标题&quot;</span><br></pre></td></tr></table></figure><p>或直接新建一个markdown文件。</p><ul><li>本地预览：</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><ul><li>上传</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure><h4 id="问题"><a class="markdownIt-Anchor" href="#问题"></a> 问题</h4><p>可能博客上传后出现404<br />在repo的setting中重新save个人域名</p><h4 id="主题"><a class="markdownIt-Anchor" href="#主题"></a> 主题</h4><p>相关参考：</p><ul><li><a href="https://blog.csdn.net/zgd826237710/article/details/99671027">Hexo 好看的主题推荐</a></li><li><a href="https://blog.cofess.com/2017/11/01/hexo-blog-theme-pure-usage-description.html">pure主题</a></li></ul><h3 id="测试"><a class="markdownIt-Anchor" href="#测试"></a> 测试</h3><ul><li>数学公式测试</li></ul><p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mi>c</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">a+b=c\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span></span></p><p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span></p>]]></content>
     
@@ -431,82 +510,6 @@
       
     <summary type="html">&lt;h3 id=&quot;函数指针&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#函数指针&quot;&gt;&lt;/a&gt; 函数指针&lt;/h3&gt;
 &lt;h4 id=&quot;参考资料&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#参考资料&quot;&gt;&lt;/a&gt; 参考资料&lt;/h4</summary>
-      
-    
-    
-    
-    <category term="C/C++" scheme="https://www.liuchanggeng.xyz/categories/C-C/"/>
-    
-    
-    <category term="学习笔记" scheme="https://www.liuchanggeng.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>this指针</title>
-    <link href="https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/this%E6%8C%87%E9%92%88/"/>
-    <id>https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/this%E6%8C%87%E9%92%88/</id>
-    <published>2020-07-25T07:23:00.000Z</published>
-    <updated>2020-11-16T09:18:37.825Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="this指针"><a class="markdownIt-Anchor" href="#this指针"></a> this指针</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> THIS_TEST_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> THIS_TEST_H</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThisTest</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !THIS_TEST_H</span></span></span><br></pre></td></tr></table></figure><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;this_test.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;complex&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThisTest::func1</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">this</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">this</span>-&gt;a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">this</span>-&gt;a = a;<span class="comment">//同名用this</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="keyword">this</span>-&gt;a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">a = b;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; (*<span class="keyword">this</span>).a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ThisTest::func2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//cout &lt;&lt; this-&gt;a &lt;&lt; endl;//错误：this只能作用与非静态成员函数的内部</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;this指针&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#this指针&quot;&gt;&lt;/a&gt; this指针&lt;/h3&gt;
-&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;</summary>
-      
-    
-    
-    
-    <category term="C/C++" scheme="https://www.liuchanggeng.xyz/categories/C-C/"/>
-    
-    
-    <category term="学习笔记" scheme="https://www.liuchanggeng.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>extern</title>
-    <link href="https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/externC/"/>
-    <id>https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/externC/</id>
-    <published>2020-07-25T02:09:00.000Z</published>
-    <updated>2020-11-16T09:17:23.230Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="extern"><a class="markdownIt-Anchor" href="#extern"></a> extern</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//h文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> EXTERNC_TEST_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EXTERNC_TEST_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// __cplusplus</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// __cplusplus</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func3</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// !EXTERNC_TEST_H</span></span></span><br></pre></td></tr></table></figure><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//C文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;externC_test.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cpp文件</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; func1(<span class="number">1</span>,<span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; func2() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="comment">//  cout &lt;&lt; func3() &lt;&lt; endl;//错误</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure><p><strong>如果运行func3():</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1&gt;------ 已启动生成: 项目: test, 配置: Debug Win32 ------</span><br><span class="line">1&gt;main.cpp</span><br><span class="line">1&gt;Debug\static_test.obj : warning LNK4042: 对象被多次指定；已忽略多余的指定</span><br><span class="line">1&gt;Debug\this_test.obj : warning LNK4042: 对象被多次指定；已忽略多余的指定</span><br><span class="line">1&gt;main.obj : error LNK2019: 无法解析的外部符号 &quot;int __cdecl func3(void)&quot; (?func3@@YAHXZ)，函数 _main 中引用了该符号</span><br><span class="line">1&gt;  已定义且可能匹配的符号上的提示:</span><br><span class="line">1&gt;    &quot;public: void __thiscall StaticTest::func3(void)&quot; (?func3@StaticTest@@QAEXXZ)</span><br><span class="line">1&gt;    _func3</span><br><span class="line">1&gt;F:\Cpptest\test\Debug\test.exe : fatal error LNK1120: 1 个无法解析的外部命令</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;extern&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#extern&quot;&gt;&lt;/a&gt; extern&lt;/h3&gt;
-&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;</summary>
-      
-    
-    
-    
-    <category term="C/C++" scheme="https://www.liuchanggeng.xyz/categories/C-C/"/>
-    
-    
-    <category term="学习笔记" scheme="https://www.liuchanggeng.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>大小端</title>
-    <link href="https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/%E5%A4%A7%E5%B0%8F%E7%AB%AF/"/>
-    <id>https://www.liuchanggeng.xyz/2020/07/25/CPP-Notes/%E5%A4%A7%E5%B0%8F%E7%AB%AF/</id>
-    <published>2020-07-25T02:09:00.000Z</published>
-    <updated>2020-11-16T09:11:49.997Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="大小端"><a class="markdownIt-Anchor" href="#大小端"></a> 大小端</h3><h4 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h4><p><a href="https://baike.baidu.com/item/%E5%A4%A7%E5%B0%8F%E7%AB%AF%E6%A8%A1%E5%BC%8F/6750542">百度百科：大小端模式</a></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> v = <span class="number">0x12345678</span>;</span><br><span class="line"><span class="keyword">char</span> *ch=<span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">4</span>];</span><br><span class="line">ch = (<span class="keyword">char</span>*)&amp;v;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x  &quot;</span>,&amp;ch[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%x\n&quot;</span>,ch[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">5cfb84  78</span><br><span class="line">5cfb85  56</span><br><span class="line">5cfb86  34</span><br><span class="line">5cfb87  12</span><br><span class="line">&#x2F;&#x2F;高位高地址，地位低地址，即小端模式</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;大小端&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#大小端&quot;&gt;&lt;/a&gt; 大小端&lt;/h3&gt;
-&lt;h4 id=&quot;参考资料&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#参考资料&quot;&gt;&lt;/a&gt; 参考资料&lt;/h4&gt;
-&lt;</summary>
       
     
     
