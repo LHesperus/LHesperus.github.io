@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.liuchanggeng.xyz/google024d9c59321f2b35.html</loc>
+    <loc>https://www.liuchanggeng.xyz/2020/11/14/hexo/my-first-hexo-blog/</loc>
     
     <lastmod>2021-05-11</lastmod>
     
@@ -10,13 +10,6 @@
   
   <url>
     <loc>https://www.liuchanggeng.xyz/2021/05/10/softwareGetStart/%E5%90%8C%E8%BD%AF%E4%BB%B6%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9B%B8%E4%BA%92%E5%86%B2%E7%AA%81/</loc>
-    
-    <lastmod>2021-05-10</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.liuchanggeng.xyz/2020/11/14/hexo/my-first-hexo-blog/</loc>
     
     <lastmod>2021-05-10</lastmod>
     
@@ -270,13 +263,6 @@
   </url>
   
   <url>
-    <loc>https://www.liuchanggeng.xyz/tags/Hexo/</loc>
-    <lastmod>2021-05-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.liuchanggeng.xyz/tags/%E5%BB%BA%E7%AB%99/</loc>
     <lastmod>2021-05-11</lastmod>
     <changefreq>daily</changefreq>
@@ -285,6 +271,13 @@
   
   <url>
     <loc>https://www.liuchanggeng.xyz/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/</loc>
+    <lastmod>2021-05-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.liuchanggeng.xyz/tags/Hexo/</loc>
     <lastmod>2021-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
